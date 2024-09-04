@@ -9,7 +9,7 @@ const Contact = () => {
           Lorem ipsum dolor sit, amet consectetur adipis. Lorem ipsum dolor sit
           amet.
         </p>
-        <form action="" className="space-y-8 ">
+        <form action="https://formsubmit.co/mateo.chumbita@gmail.com" className="space-y-8 " method="POST">
           <div>
             <label htmlFor="email" className="form_label">
               Email
@@ -26,7 +26,7 @@ const Contact = () => {
               Asunto:
             </label>
             <input
-              type="email"
+              type="text"
               id="email"
               placeholder="¿En qué podemos ayudarte?"
               className="form_input mt-1"
@@ -38,7 +38,7 @@ const Contact = () => {
             </label>
             <textarea
             rows="3"
-              type="email"
+              type="text"
               id="email"
               placeholder="Escribe tu consulta..."
               className="form_input mt-1"

@@ -4,6 +4,7 @@ import {
   deletePeluquero,
   getAllPeluqueros,
   getSinglePeluquero,
+  getPeluqueroProfile,
 } from "../Controllers/peluqueroController.js";
 
 
@@ -22,5 +23,5 @@ router.get("/:id", getSinglePeluquero);
 router.get("/", getAllPeluqueros);
 router.put("/:id",authenticate, restrict(['peluquero']), updatePeluquero);
 router.delete("/:id",authenticate, restrict(['peluquero']), deletePeluquero);
-
+router.get('/profile/me',authenticate, restrict(['peluquero']),getPeluqueroProfile)
 export default router;

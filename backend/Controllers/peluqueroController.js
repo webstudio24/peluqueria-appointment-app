@@ -1,5 +1,5 @@
 import Peluquero from "../models/PeluqueroSchema.js";
-
+import Booking from "../models/BookingSchema.js";
 export const updatePeluquero = async (req, res) => {
   const id = req.params.id;
 
@@ -88,25 +88,27 @@ export const getAllPeluqueros = async (req, res) => {
   }
 };
 
-
 export const getPeluqueroProfile = async (req, res) => {
-  const userId = req.userId
-
+  const peluqueroId = req.userId;
 
   try {
-    const user  = await User.findById(userId)
+    const peluquero = await Peluquero.findById(peluqueroId);
 
-    if(!user){
-      return res.status(404).json({success:false,message:'Usuario no encontrado'})
+    if (!peluquero) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Peluquero no encontrado" });
     }
 
-    const {password,...rest} = user._doc
+    const { password, ...rest } = peluquero._doc;
+    const appointments = await Booking.find({ peluquero: peluqueroId });
 
-
-    res.status(200).json({succes:true, message:'Usuario encontrado',data:{...rest}})
+    res
+      .status(200)
+      .json({ succes: true, message: "Usuario encontrado", data: { ...rest,appointments } });
   } catch (err) {
     res
-    .status(500)
-    .json({ success: false, message: "Algo se rompió, intentalo de nuevo" });
+      .status(500)
+      .json({ success: false, message: "Algo se rompió, intentalo de nuevo" });
   }
-}
+};

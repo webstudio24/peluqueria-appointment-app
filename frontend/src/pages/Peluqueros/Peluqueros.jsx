@@ -1,42 +1,86 @@
-import PeluqueroCaard from '../../components/Peluqueros/PeluqueroCard'
-import {peluqueros} from '../../assets/data/peluqueros'
-import PeluquerosCard from '../../components/Peluqueros/PeluqueroCard'
-import Testimonial from '../../components/Testimonial/Testimonial'
+import PeluqueroCaard from "../../components/Peluqueros/PeluqueroCard";
+import { peluqueros } from "../../assets/data/peluqueros";
+import PeluquerosCard from "../../components/Peluqueros/PeluqueroCard";
+import Testimonial from "../../components/Testimonial/Testimonial";
+import { BASE_URL } from "../../config";
+import useFetchData from "../../hooks/useFetchData.jsx";
+import Loader from "../../components/Loader/Loading.jsx";
+import Error from "../../components/Error/Error.jsx";
+import { useEffect, useState } from "react";
 
 const Peluqueros = () => {
-  return <>
-  <section className='bg-[#fff9ea]'> 
-    <div className="container text-center">
-      <h2 className='heading'>Buscar un Peluquero </h2>
-      <div className="max-w-[570px] mt-[30px] mx-auto bg-[#0066ff2c] rounded-md flex items-center justify-between">
-        <input type="search" className='py-4 pl-4 pr-2 bg-transparent w-full focus:outline-none  cursor-pointer placeholder:text-textColor' placeholder='Buscá a tu peluquero'/>
-        <button className='btn mt-0 rounded-[0px] rounded-r-md '>Buscar </button>
-      </div>
-    </div>
-  </section>
-  <section>
-    <div className="container">
-    <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 '>
-        {peluqueros.map((peluquero)=><PeluquerosCard key={peluquero.id} peluquero={peluquero} />)}
-    </div>
-    </div>
-  </section>
-  <section>
-          <div className="container">
-          <div className="xl:w-[470px] mx-auto">
-              <h2 className="heading text-center ">
-               ¿Qué dicen nuestros clientes?
-              </h2>
-              <p className="text__para text-center">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                Quisquam cumque magni minima sapiente ad id fugiat minus neque.
-              </p>
-            </div>
+  const [query, setQuery] = useState("");
 
-            <Testimonial/>
+  const [debounceQuery, setDebounceQuery] = useState("");
+  const handleSearch = () => {
+    setQuery(query.trim());
+    console.log("handle search");
+  };
+
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setDebounceQuery(query);
+    }, 700)
+    return () => clearTimeout(timeout)
+  },[query])
+  const {
+    data: peluqueros,
+    loading,
+    error,
+  } = useFetchData(`${BASE_URL}/peluqueros?query=${debounceQuery}`);
+  return (
+    <>
+      <section className="bg-[#fff9ea]">
+        <div className="container text-center">
+          <h2 className="heading">Buscar un Peluquero </h2>
+          <div className="max-w-[570px] mt-[30px] mx-auto bg-[#0066ff2c] rounded-md flex items-center justify-between">
+            <input
+              type="search"
+              className="py-4 pl-4 pr-2 bg-transparent w-full focus:outline-none  cursor-pointer placeholder:text-textColor"
+              placeholder="Buscá a tu peluquero por nombre o especialidad"
+              value={query}
+              onChange={e => setQuery(e.target.value)}
+            />
+            <button
+              className="btn mt-0 rounded-[0px] rounded-r-md "
+              onClick={handleSearch}
+            >
+              Buscar{" "}
+            </button>
           </div>
-        </section>
-  </>
-}
+        </div>
+      </section>
+      <section>
+        <div className="container">
+          {loading && <Loader />}
+          {error && <Error />}
+          {!loading && !error && (
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 ">
+              {peluqueros.map((peluquero) => (
+                <PeluquerosCard key={peluquero.id} peluquero={peluquero} />
+              ))}
+            </div>
+          )}
+        </div>
+      </section>
+      <section>
+        <div className="container">
+          <div className="xl:w-[470px] mx-auto">
+            <h2 className="heading text-center ">
+              ¿Qué dicen nuestros clientes?
+            </h2>
+            <p className="text__para text-center">
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quisquam
+              cumque magni minima sapiente ad id fugiat minus neque.
+            </p>
+          </div>
 
-export default Peluqueros
+          <Testimonial />
+        </div>
+      </section>
+    </>
+  );
+};
+
+export default Peluqueros;
