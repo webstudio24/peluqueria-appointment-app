@@ -4,7 +4,7 @@ import useGetProfile from "../../hooks/useFetchData.jsx";
 import { BASE_URL } from "../../config";
 import Tabs from "./Tabs.jsx";
 import { useState } from "react";
-import starIcon from "../../assets/images/star.png";
+import starIcon from "../../assets/images/Star.png";
 import PeluqueroAbout from "../../pages/Peluqueros/PeluqueroAbout.jsx";
 import Profile from "./Profile.jsx";
 import Appointments from "./Appointments.jsx";
