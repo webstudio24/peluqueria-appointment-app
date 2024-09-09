@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import starIcon from "../../assets/images/star.png";
+import starIcon from "../../assets/images/Star.png";
 import PeluqueroAbout from "./PeluqueroAbout";
 import FeedBack from "./FeedBack";
 import SidePanel from "./SidePanel";
